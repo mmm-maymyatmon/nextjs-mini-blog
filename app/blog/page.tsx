@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import ModalBox from "@/components/ModalBox";
 import { deletePost, getAllPost } from "@/server/action";
-import { Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 type Post = {
@@ -42,22 +42,27 @@ const BlogPage = async () => {
               key={post.id}
               className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col"
             >
-              <div className="absolute top-3 right-3 flex gap-2">
-              <form action={deletePost}>
-                <input type="hidden" name="id" value={post.id} /> 
-                <Button
-                  label=""
-                  variant="danger"
-                className="absolute top-3 right-3 p-2 rounded-full text-red-500 hover:bg-red-50 hover:text-red-600 transition"
-                aria-label="Delete post"
-              >
-                <Trash2 size={18} />
-              </Button>
-              </form>
+              <div className="my-4 flex gap-3">
+                <Link
+                  href={`/blog/${post.id}/edit`}
+                  className="px-3 py-1 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 text-sm flex items-center gap-1"
+                >
+                  <Pencil size={14} /> Edit
+                </Link>
+
+                <form action={deletePost}>
+                  <input type="hidden" name="id" value={post.id} />
+                  <button
+                    type="submit"
+                    className="px-3 py-1 rounded-md bg-red-50 text-red-600 hover:bg-red-100 text-sm flex items-center gap-1"
+                  >
+                    <Trash2 size={14} /> Delete
+                  </button>
+                </form>
               </div>
 
               <div className="mb-4">
-                <h3 className="text-2xl font-semibold mb-2 text-gray-900">
+                <h3 className="text-2xl font-semibold mb-2 text-gray-900 line-clamp-2">
                   {post.title}
                 </h3>
                 <p className="text-gray-700 line-clamp-4">{post.content}</p>
