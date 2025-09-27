@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "."
 import {blogPosts} from "./schema"
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 
 
 export const getAllPost = async() => {
@@ -26,4 +27,33 @@ export const createPost: (formData: FormData) => Promise<void> = async (formData
     await db.insert(blogPosts).values({ title, content })
     revalidatePath("/")
     redirect("/")
- }
+}
+ 
+export const deletePost: (formData: FormData) => Promise<void> = async (formData) => {
+
+    const id = Number(formData.get("id"));
+
+    if (!id) {
+        console.error("No ID found for deletion");
+        return
+    }
+
+    await db.delete(blogPosts).where(eq(blogPosts.id, Number(id)));
+    revalidatePath("/")
+    redirect("/")
+}
+
+export const getPostById = async (id: number) => {
+     if(isNaN(id)) {
+        return { error: "Invalid post ID" }
+    }
+    const post = await db.query.blogPosts.findFirst({where: eq(blogPosts.id, id)
+    })
+
+   
+    
+    if(!post) {
+        return { error: "Post not found" }
+    }
+    return { success: post }
+}
