@@ -2,14 +2,7 @@ import Button from "@/components/Button";
 import { getPostById, updateData } from "@/server/action";
 import Link from "next/link";
 import React from "react";
-
-type EditPostPageProps = {
-  params: {
-    id: string;
-  };
-};
-
-const EditPostPage = async ({ params }: EditPostPageProps) => {
+const EditPostPage = async ({ params }: { params: { id: string } }) => {
   const { success, error } = await getPostById(Number(params.id));
 
   if (error) {
@@ -19,6 +12,7 @@ const EditPostPage = async ({ params }: EditPostPageProps) => {
       </p>
     );
   }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8">
@@ -32,30 +26,28 @@ const EditPostPage = async ({ params }: EditPostPageProps) => {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Title
-            
-            <input
-              type="text"
-              name="title"
-              defaultValue={success?.title}
-              placeholder="Enter your post title"
+              <input
+                type="text"
+                name="title"
+                defaultValue={success?.title}
+                placeholder="Enter your post title"
                 className="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition px-4 py-2"
                 required
               />
-              </label>
+            </label>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Content
-            
-            <textarea
-              name="content"
-              defaultValue={success?.content}
-              placeholder="Write your content here..."
-              rows={6}
+              <textarea
+                name="content"
+                defaultValue={success?.content}
+                placeholder="Write your content here..."
+                rows={6}
                 className="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition px-4 py-2"
                 required
-            ></textarea>
+              ></textarea>
             </label>
           </div>
 
