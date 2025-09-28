@@ -2,10 +2,11 @@ import { getPostById } from "@/server/action";
 import Link from "next/link";
 
 type BlogDetailsProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>; 
 };
 
-const BlogDetails = async ({ params }: BlogDetailsProps) => {
+const BlogDetails = async (props: BlogDetailsProps) => {
+  const params = await props.params; 
   const { success, error } = await getPostById(Number(params.id));
   const postId = Number(params.id);
 
