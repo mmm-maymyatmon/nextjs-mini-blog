@@ -21,7 +21,7 @@ export const createPost: (formData: FormData) => Promise<void> = async (
   const content = formData.get("content")?.toString().trim();
 
   if (!title || !content) {
-    console.log("No title found");
+    console.log("Title or content missing during creation.");
     return;
   }
   await db.insert(blogPosts).values({ title, content });
@@ -39,7 +39,7 @@ export const deletePost: (formData: FormData) => Promise<void> = async (
     return;
   }
 
-  await db.delete(blogPosts).where(eq(blogPosts.id, Number(id)));
+  await db.delete(blogPosts).where(eq(blogPosts.id, id ));
   revalidatePath("/");
   redirect("/");
 };
@@ -73,7 +73,6 @@ export const updateData: (formData: FormData) => Promise<void> = async (formData
         return;
     }
     
-    // await db.update(blogPosts).set({ title, content }).where(eq(blogPosts.id, id))
     await db.update(blogPosts).set({ title, content }).where(eq(blogPosts.id, id))
     revalidatePath(`/blog/${id}`)
     redirect(`/blog/${id}`)
